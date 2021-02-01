@@ -8,5 +8,5 @@ class RequestCreateMessageDtoSchema(Schema):
     recipient = fields.Str(required=True, allow_none=False)
 
 
-class RequestCreateUserDto(RequestDto, RequestCreateMessageDtoSchema):
+class RequestCreateMessageDto(RequestDto, RequestCreateMessageDtoSchema):
     __schema__ = RequestCreateMessageDtoSchema

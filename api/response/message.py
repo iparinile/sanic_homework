@@ -30,5 +30,5 @@ class ResponseMessageDtoSchema(Schema):
         return dt
 
 
-class ResponseUserDto(ResponseDto, ResponseMessageDtoSchema):
+class ResponseMessageDto(ResponseDto, ResponseMessageDtoSchema):
     __schema__ = ResponseMessageDtoSchema
