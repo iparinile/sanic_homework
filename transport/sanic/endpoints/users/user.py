@@ -21,7 +21,7 @@ class UserEndpoint(BaseEndpoint):
         request_model = RequestPatchUserDto(body)
 
         try:
-            user = user_queries.patch_user(session, request_model, uid)
+            db_user = user_queries.patch_user(session, request_model, uid)
         except DBUserNotExistsException:
             raise SanicUserNotFound('User not found')
 
@@ -30,7 +30,7 @@ class UserEndpoint(BaseEndpoint):
         except (DBDataException, DBIntegrityException) as e:
             raise SanicDBException(str(e))
 
-        response_model = ResponseUserDto(user)
+        response_model = ResponseUserDto(db_user)
 
         return await self.make_response_json(status=200, body=response_model.dump())
 
@@ -39,7 +39,7 @@ class UserEndpoint(BaseEndpoint):
     ) -> BaseHTTPResponse:
 
         if token.get('uid') != uid:
-            return await self.make_response_json(status=403, message='You can only change your own data')
+            return await self.make_response_json(status=403, message='You can only delete your own data')
 
         try:
             user = user_queries.delete_user(session, user_id=uid)
@@ -52,3 +52,18 @@ class UserEndpoint(BaseEndpoint):
             raise SanicDBException(str(e))
 
         return await self.make_response_json(status=204)
+
+    async def method_get(self, request: Request, body: dict, session: DBSession, uid: int, token: dict,
+                         *args, **kwargs) -> BaseHTTPResponse:
+
+        if token.get('uid') != uid:
+            return await self.make_response_json(status=403, message='You can only get your own data')
+
+        try:
+            db_user = user_queries.get_user(session, user_id=uid)
+        except DBUserNotExistsException:
+            raise SanicUserNotFound('User not found')
+
+        response_model = ResponseUserDto(db_user)
+
+        return await self.make_response_json(status=200, body=response_model.dump())
