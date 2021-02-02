@@ -13,5 +13,5 @@ def get_routes(config: ApplicationConfig, context: Context) -> Tuple:
         endpoints.UserEndpoint(config, context, uri='/user/<uid:int>', methods=['PATCH', 'DELETE', 'GET'],
                                auth_required=True),
         endpoints.AllUserEndpoint(config, context, uri='/user/all', methods=['GET'], auth_required=True),
-        endpoints.CreateMessageEndpoint(config, context, uri='/msg', methods=['POST'], auth_required=True)
+        endpoints.CreateAndGetMessageEndpoint(config, context, uri='/msg', methods=['POST', 'GET'], auth_required=True)
     )

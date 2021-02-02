@@ -14,7 +14,7 @@ def create_user(session: DBSession, user: RequestCreateUserDto, hashed_password:
         last_name=user.last_name
     )
 
-    if session.get_user_by_login(new_user.login) is not None:
+    if session.get_user_by_login_with_deleted(new_user.login) is not None:
         raise DBUserExistsException
 
     session.add_model(new_user)

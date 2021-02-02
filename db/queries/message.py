@@ -1,3 +1,5 @@
+from typing import List
+
 from api.request import RequestCreateMessageDto
 from db.database import DBSession
 from db.exceptions import DBUserNotExistsException
@@ -19,3 +21,7 @@ def create_message(session: DBSession, message: RequestCreateMessageDto, sender_
     session.add_model(new_message)
 
     return new_message
+
+
+def get_messages(session: DBSession, user_id: int) -> List['DBMessage']:
+    return session.get_my_all_messages(user_id)

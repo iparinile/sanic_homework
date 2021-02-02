@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError, DataError
 from sqlalchemy.orm import sessionmaker, Session, Query
 
 from db.exceptions import DBIntegrityException, DBDataException
-from db.models import BaseModel, DBUser
+from db.models import BaseModel, DBUser, DBMessage
 
 
 class DBSession:
@@ -19,6 +19,9 @@ class DBSession:
 
     def users(self) -> Query:
         return self.query(DBUser).filter(DBUser.is_delete == 0)
+
+    def messages(self) -> Query:
+        return self.query(DBMessage).filter(DBMessage.is_delete == 0)
 
     def close_session(self):
         self._session.close()
@@ -34,6 +37,9 @@ class DBSession:
     def get_user_by_login(self, login: str) -> DBUser:
         return self.users().filter(DBUser.login == login).first()
 
+    def get_user_by_login_with_deleted(self, login: str) -> DBUser:
+        return self.query().filter(DBUser.login == login).first()
+
     def get_user_by_id(self, uid: int) -> DBUser:
         return self.users().filter(DBUser.id == uid).first()
 
@@ -41,6 +47,9 @@ class DBSession:
         qs = self.users()
         # print(qs)
         return qs.all()
+
+    def get_my_all_messages(self, uid: int) -> List['DBMessage']:
+        return self.messages().filter(DBMessage.recipient_id == uid).all()
 
     def commit_session(self, need_close: bool = False):
         try:
