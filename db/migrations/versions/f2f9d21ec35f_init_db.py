@@ -38,7 +38,7 @@ def upgrade():
     sa.Column('is_delete', sa.BOOLEAN(), nullable=False),
     sa.Column('sender_id', sa.Integer(), nullable=False),
     sa.Column('recipient_id', sa.Integer(), nullable=False),
-    sa.Column('message', sa.VARCHAR(), nullable=False),
+    sa.Column('new_message', sa.VARCHAR(), nullable=False),
     sa.ForeignKeyConstraint(['recipient_id'], ['users.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['sender_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),

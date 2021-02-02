@@ -8,7 +8,6 @@ class RequestPatchUserDtoSchema(Schema):
     last_name = fields.Str()
 
 
-# Проверять наличие поля в БД
 class RequestPatchUserDto(RequestDto, RequestPatchUserDtoSchema):
     fields: list
     __schema__ = RequestPatchUserDtoSchema

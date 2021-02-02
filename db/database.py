@@ -51,6 +51,9 @@ class DBSession:
     def get_my_all_messages(self, uid: int) -> List['DBMessage']:
         return self.messages().filter(DBMessage.recipient_id == uid).all()
 
+    def get_message_db_by_message_id(self, message_id: int) -> DBMessage:
+        return self.messages().filter(DBMessage.sender_id == message_id).first()
+
     def commit_session(self, need_close: bool = False):
         try:
             self._session.commit()

@@ -1,11 +1,14 @@
 import datetime
+import os
 
 import jwt
+from dotenv import load_dotenv
 
 from helpers.auth.exception import ReadTokenException
 
+load_dotenv()
 
-secret = 'SUPER_SECRET_KEY'
+secret = os.getenv('secret', 'SUPER_SECRET_KEY')
 
 
 def create_token(payload: dict) -> str:
