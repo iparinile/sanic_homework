@@ -38,7 +38,7 @@ class DBSession:
         return self.users().filter(DBUser.login == login).first()
 
     def get_user_by_login_with_deleted(self, login: str) -> DBUser:
-        return self.query().filter(DBUser.login == login).first()
+        return self.query(DBUser).filter(DBUser.login == login).first()
 
     def get_user_by_id(self, uid: int) -> DBUser:
         return self.users().filter(DBUser.id == uid).first()
