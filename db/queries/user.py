@@ -48,7 +48,12 @@ def patch_user(session: DBSession, user: RequestPatchUserDto, user_id: int) -> D
 
 def delete_user(session: DBSession, user_id: int) -> DBUser:
     db_user = session.get_user_by_id(user_id)
-    db_user.is_delete = True
+
+    try:
+        db_user.is_delete = True
+    except AttributeError:
+        raise DBUserNotExistsException
+
     return db_user
 
 

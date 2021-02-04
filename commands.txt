@@ -1,3 +1,2 @@
-создание миграции бд - alembic revision --message="" --autogenerate
-миграция - alembic upgrade head
-
+#  создание миграции бд - alembic revision --message="" --autogenerate
+#  миграция - alembic upgrade head

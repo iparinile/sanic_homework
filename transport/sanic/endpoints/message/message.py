@@ -32,7 +32,6 @@ class MessageEndpoint(BaseEndpoint):
             session.commit_session()
         except (DBDataException, DBIntegrityException) as e:
             raise SanicDBException(str(e))
-
         response_model = ResponseMessageDto(db_message)
 
         return await self.make_response_json(body=response_model.dump(), status=200)
@@ -48,7 +47,10 @@ class MessageEndpoint(BaseEndpoint):
         if token.get('uid') != db_message.sender_id:
             return await self.make_response_json(status=403, message='You can only delete your own data')
 
-        db_message = message_queries.delete_message(db_message)
+        try:
+            db_message = message_queries.delete_message(db_message)
+        except DBMessageNotExistsException:
+            raise SanicMessageNotFound('Message not found')
 
         try:
             session.commit_session()

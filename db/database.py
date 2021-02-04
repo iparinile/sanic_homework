@@ -52,7 +52,7 @@ class DBSession:
         return self.messages().filter(DBMessage.recipient_id == uid).all()
 
     def get_message_db_by_message_id(self, message_id: int) -> DBMessage:
-        return self.messages().filter(DBMessage.sender_id == message_id).first()
+        return self.messages().filter(DBMessage.id == message_id).first()
 
     def commit_session(self, need_close: bool = False):
         try:

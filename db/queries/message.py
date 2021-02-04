@@ -40,5 +40,8 @@ def patch_message(db_message: DBMessage, edit_message: str) -> DBMessage:
 
 
 def delete_message(db_message: DBMessage) -> DBMessage:
-    db_message.is_delete = True
+    try:
+        db_message.is_delete = True
+    except AttributeError:
+        raise DBMessageNotExistsException
     return db_message

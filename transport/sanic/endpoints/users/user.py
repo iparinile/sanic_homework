@@ -2,7 +2,7 @@ from sanic.request import Request
 from sanic.response import BaseHTTPResponse
 
 from api.request import RequestPatchUserDto
-from api.response import ResponseMessageDto
+from api.response import ResponseUserDto
 from db.database import DBSession
 from db.exceptions import DBUserNotExistsException, DBDataException, DBIntegrityException
 from db.queries import user as user_queries
@@ -30,7 +30,7 @@ class UserEndpoint(BaseEndpoint):
         except (DBDataException, DBIntegrityException) as e:
             raise SanicDBException(str(e))
 
-        response_model = ResponseMessageDto(db_user)
+        response_model = ResponseUserDto(db_user)
 
         return await self.make_response_json(status=200, body=response_model.dump())
 
@@ -64,6 +64,6 @@ class UserEndpoint(BaseEndpoint):
         except DBUserNotExistsException:
             raise SanicUserNotFound('User not found')
 
-        response_model = ResponseMessageDto(db_user)
+        response_model = ResponseUserDto(db_user)
 
         return await self.make_response_json(status=200, body=response_model.dump())
